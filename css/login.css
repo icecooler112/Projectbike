@@ -1,0 +1,51 @@
+html {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  body {
+  background-color: #e9ecef;
+  }
+  .login-box {
+    background-color: #fff;
+    margin: 7% auto;
+    width: 380px;
+    padding: 15px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+  .login-logo {
+    font-size: 35px;
+    text-align: center;
+    margin-bottom: 25px;
+    font-weight: 300;
+  }
+  @media (max-width: 576px) {
+    .login-box {
+      width: 90%;
+      margin-top: 20px;
+    }
+  }
+  .login-input {
+    border-right: 0;
+  }
+  .login-input-group-text {
+    background: transparent !important;
+    border-left: 0;
+  }
+  .small{
+    font-size: 80%;
+    font-weight: 400;
+  }
+  ::-webkit-input-placeholder {
+  font-size: 13px;
+}
+::-moz-placeholder {
+  font-size: 13px;
+}
+:-ms-input-placeholder {
+  font-size: 13px;
+}
+  ::placeholder {
+  font-size: 13px;
+}
