@@ -11,7 +11,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>HOME</title>
+    <title>การจัดการข้อมูลลูกค้า</title>
     <!-- ติดตั้งการใช้งาน CSS ต่างๆ -->
 
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
@@ -34,15 +34,16 @@
              <li>
                  <a href="index.php"><i class="fas fa-toolbox mr-1"></i>เพิ่มข้อมูลการซ่อม</a>
              </li>
+             <li>
+                 <a href="rp_history.php"><i class="fas fa-bell"></i> ประวัติการซ่อม</a>
+             </li>
              <li class="active">
                  <a href="user.php"><i class="fas fa-users"></i> ข้อมูลลูกค้า</a>
              </li>
              <li>
                  <a href="staff.php"><i class="fas fa-user-cog"></i> ข้อมูลพนักงาน</a>
              </li>
-             <li>
-                 <a href="rp_history.php"><i class="fas fa-bell"></i> ประวัติการซ่อม</a>
-             </li>
+
              <li>
                  <a href="product.php"><i class="fas fa-box"></i> ข้อมูลสินค้า</a>
              </li>
@@ -64,8 +65,7 @@
                        <ul class="nav navbar-nav ml-auto">
                            <li class="nav-item active">
                              <?php if(isset($_SESSION['id'])) { ?>
-                               <center><h5><?php echo $_SESSION["First_Name"];?> <?php echo $_SESSION["Last_Name"];?></h5></center>
-                               <center><a class="btn btn-danger"data-toggle="modal" data-target="#LogoutModal" href="#">ออกจากระบบ</a></center>
+                               <center><h5><?php echo $_SESSION["First_Name"];?> <?php echo $_SESSION["Last_Name"];?>  <a class="btn btn-danger ml-2"data-toggle="modal" data-target="#LogoutModal" href="#">ออกจากระบบ</a></h5></center>
 
                                <div id="LogoutModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
                                  <div class="modal-dialog" role="document">
