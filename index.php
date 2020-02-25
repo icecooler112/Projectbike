@@ -19,7 +19,30 @@
 
 </head>
 <body>
+  <?php
+    include('connect.php'); // ดึงไฟล์เชื่อมต่อ Database เข้ามาใช้งาน
 
+        if(isset($_POST['submit'])){
+
+                $sql = "INSERT INTO `history` (`user_id`, `bike_id`, `datetime`, `h_price`)
+                        VALUES ('".$_POST['user_id']."', '".$_POST['bike_id']."', '".$_POST['datetime']."', '".$_POST['h_price']."');";
+                $result = $conn->query($sql);
+                /**
+                 * ตรวจสอบเงื่อนไขที่ว่าการประมวณผลคำสั่งนี่สำเร็จหรือไม่
+                 */
+                if($result){
+                    echo '<div class="alert alert-success alert-dismissible fade show test-center" role="alert">
+                    <strong>สำเร็จ!</strong>ทำการเพิ่มข้อมูลลูกค้าเรียบร้อย.
+                  </div>';
+                    header('Refresh:1; url=index.php');
+                }else{
+                    echo '<div class="alert alert-danger alert-dismissible fade show test-center" role="alert">
+                    <strong>ล้มเหลว!</strong>ไม่สามารถทำการกรอกข้อมูลลูกค้าได้ กรุณาลองใหม่อีกครั้ง.';
+                    header('Refresh:1; url=index.php');
+                }
+            }
+
+    ?>
   <div class="wrapper">
        <!-- Sidebar  -->
        <nav id="sidebar">
@@ -32,19 +55,19 @@
                  <a href="index.php"><i class="fas fa-toolbox mr-1"></i>เพิ่มข้อมูลการซ่อม</a>
              </li>
              <li>
-                 <a href="user_list.php"><i class="fas fa-users"></i> ข้อมูลลูกค้า</a>
+                 <a href="user.php"><i class="fas fa-users"></i> ข้อมูลลูกค้า</a>
              </li>
              <li>
                  <a href="staff.php"><i class="fas fa-user-cog"></i> ข้อมูลพนักงาน</a>
              </li>
              <li>
-                 <a href="rp_history.php"><i class="fas fa-bell"></i> ประวัติการซ่อม</a>
+                 <a href="history.php"><i class="fas fa-bell"></i> ประวัติการซ่อม</a>
              </li>
              <li>
                  <a href="product.php"><i class="fas fa-box"></i> ข้อมูลสินค้า</a>
              </li>
              <li>
-                 <a href="dl_shop.php"><i class="fas fa-truck"></i> ข้อมูลผู้จำหน่ายสินค้า</a>
+                 <a href="dealer.php"><i class="fas fa-truck"></i> ข้อมูลผู้จำหน่ายสินค้า</a>
              </li>
              <li>
                  <a href="show.php"><i class="fas fa-chart-line"></i> รายงาน</a>
@@ -94,26 +117,70 @@
                </div>
            </nav>
 
-           <h2>Collapsible Sidebar Using Bootstrap 4</h2>
-           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+           <div class="container">
+                <div class="row">
+                    <div class="col-md-9 mx-auto mt-5">
+                        <div class="card">
+                            <form class="was-validated" action="" method="POST" enctype="multipart/form-data">
+                                <div class="card-header text-center">
+                                    กรอกข้อมูลการซ่อม
+                                </div>
+                                  <div class="card-body">
+                                <div class="form-group row">
+                                    <label for="dl_id" class="col-sm-3 col-form-label">เลือกชื่อลูกค้า</label>
+                                    <div class="col-sm-9">
+                                      <select class="form-control" id = "user_id" name="user_id" required>
+                                              <option value="" disabled selected>----- กรุณาเลือก -----</option>
+                                                <?php $sql = "SELECT * FROM user";
+                                                $result = $conn->query($sql);
+                                                while ($row = $result->fetch_assoc()) {
+                                                        ?>
+                                                        <option value="<?php echo $row['user_id']; ?>"><?php echo $row["fullname"]; ?></option>
+                                                          <?php } ?>
+                                                          </select>
+                                        <div class="invalid-feedback">
+                                            กรุณาเลือกชื่อลูกค้า
+                                        </div>
+                                    </div>
+                                </div>
 
-           <div class="line"></div>
+                                    <div class="form-group row">
+                                        <label for="bike_id" class="col-sm-3 col-form-label">เลขทะเบียนรถ</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="bike_id" name="bike_id" required>
+                                            <div class="invalid-feedback">
+                                                กรุณากรอกเลขทะเบียน (ตัวอย่าง : กข 123 , 1กข 2222)
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="datetime" class="col-sm-3 col-form-label">วันที่เข้ารับการซ่อม</label>
+                                        <div class="col-sm-9">
+                                            <input type="datetime" class="form-control" id="datetime" value="<?php date_default_timezone_set('asia/bangkok'); echo date('Y-m-d H:i:s');?>" name="datetime" required>
+                                            <div class="invalid-feedback">
+                                                กรุณาเลือกวันที่เข้ารับการซ่อม
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="h_price" class="col-sm-3 col-form-label">ราคารวม</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="h_price" name="h_price" required>
+                                            <div class="invalid-feedback">
+                                                กรุณากรอกราคารวม
+                                            </div>
+                                        </div>
+                                    </div>
+                                <div class="card-footer text-center">
+                                    <input type="submit" name="submit" class="btn btn-outline-primary" value="ยืนยัน">
+                                </div>
+                                </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
 
-           <h2>Lorem Ipsum Dolor</h2>
-           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-           <div class="line"></div>
-
-           <h2>Lorem Ipsum Dolor</h2>
-           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-           <div class="line"></div>
-
-           <h3>Lorem Ipsum Dolor</h3>
-           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-       </div>
-   </div>
     <!-- ติดตั้งการใช้งาน Javascript ต่างๆ -->
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
