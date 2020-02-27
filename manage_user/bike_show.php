@@ -3,8 +3,9 @@
      * เปิดใช้งาน Session
      */
     session_start();
+   
 ?>
-<?php     include('connect.php'); // ดึงไฟล์เชื่อมต่อ Database เข้ามาใช้งาน ?>
+<?php     include('../connect.php'); // ดึงไฟล์เชื่อมต่อ Database เข้ามาใช้งาน ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,8 +19,8 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
     <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css"> -->
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/style.css">
 
 </head>
 <body>
@@ -96,56 +97,59 @@
                    </div>
                </div>
            </nav>
-<center><p><h2>ข้อมูลลูกค้า</h2></p></center>
-<a href="manage_user/create_user.php" class="btn btn-success mb-2 float-right"><i class="fas fa-plus"></i> เพิ่มข้อมูลลูกค้า </a>
+
+
+<center><p><h2>ข้อมูลรถจักรยานยนต์ </h2></p></center>
+<?php
+$id = $_GET['id'];
+$sql = "SELECT user_id
+FROM `user` WHERE user_id = '$id'";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+?>
+<a href="../manage_bike/create_bike.php?id=<?php echo $row['user_id']; ?>" class="btn btn-success mb-2 float-right"><i class="fas fa-plus"></i> เพิ่มข้อมูข้อมูลรถจักรยานยนต์ </a>
+
            <table class="table table-bordered text-center DataTable">
 
              <thead class="thead-light">
                <tr>
                  <th scope="col">ลำดับ</th>
-                 <th scope="col">ชื่อ-สกุล</th>
-                 <th scope="col">ที่อยู่</th>
-                 <th scope="col">เบอร์โทรศัพท์</th>
-                 <th scope="col">Email</th>
-                 <th scope="col">Facebook</th>
-                 <th scope="col">Line</th>
-                  <th scope="col">จัดการข้อมูลรถ</th>
+                 <th scope="col">เลขทะเบียน</th>
+                 <th scope="col">สีของรถ</th>
+                 <th scope="col">ปีของรถ</th>
+                 <th scope="col">ยี่ห้อ</th>
                  <th scope="col">แก้ไข</th>
                  <th scope="col">ลบ</th>
                </tr>
              </thead>
              <tbody>
-             <?php
-                      $search=isset($_GET['search']) ? $_GET['search']:'';
+               <?php
+                                           $id = $_GET['id'];
+                                            $sql = "SELECT user.user_id,user.first_name,user.last_name,bike_user.bu_id,bike_user.user_id,bike_user.bike_id,bike_user.color,bike_user.year_bike,bike_user.brand
+                                            FROM user
+                                            INNER JOIN bike_user
+                                            ON user.user_id = bike_user.user_id
+                                            WHERE user.user_id= ('".$id."')";
+                                            $result = $conn->query($sql);
+                                            $num = 0;
+                                            while ($row = $result->fetch_assoc()) {
+                                              $num++;
+                                               ?>
 
-                      $sql = "SELECT * FROM user WHERE first_name LIKE '%$search%'";
-                      $result = $conn->query($sql);
-                      $num = 0;
-                      while ($row = $result->fetch_assoc()) {
-                        $num++;
-                        ?>
                        <tr>
                          <td><?php echo $num; ?></td>
-                         <td><?php echo $row['first_name']; ?> <?php echo $row['last_name']; ?></td>
-                         <td><?php echo $row['user_address']; ?></td>
-                         <td><?php echo $row['phone']; ?></td>
-                         <td><?php echo $row['email']; ?></td>
-                         <td><?php echo $row['user_facebook']; ?></td>
-                         <td><?php echo $row['user_line']; ?></td>
-                         <td>
-
-                           <a href="manage_user/bike_show.php?id=<?php echo $row['user_id']; ?>" class="btn btn-sm btn-primary ">
-                             <i class="fas fa-arrow-circle-down"></i> จัดการ
-                           </a>
-                         </td>
+                         <td><?php echo $row['bike_id']; ?></td>
+                         <td><?php echo $row['color']; ?></td>
+                         <td><?php echo $row['year_bike']; ?></td>
+                         <td><?php echo $row['brand']; ?></td>
                          <td>
                            <a href="manage_user/edit_user.php?id=<?php echo $row['user_id']; ?>" class="btn btn-sm btn-warning text-white ">
                              <i class="fas fa-edit"></i> แก้ไข
                            </a>
                          </td>
                          <td>
-                           <?php if ($row['user_id']) { ?>
-                             <a href="#" onclick="deleteItem(<?php echo $row['user_id']; ?>);" class="btn btn-sm btn-danger">
+                           <?php if ($row['bu_id']) { ?>
+                             <a href="#" onclick="deleteItem(<?php echo $row['bu_id']; ?>);" class="btn btn-sm btn-danger">
                                <i class="fas fa-trash-alt"></i> ลบ
                              </a>
                            <?php } ?>
@@ -154,25 +158,24 @@
                      <?php } ?>
 
 
-
              </tbody>
            </table>
-
+           <center><a class="btn btn-danger text-center" href="../user.php">ย้อนกลับ</a></center>
 
            <!-- Script Delete -->
            <script>
                  function deleteItem(id) {
                    if (confirm('คุณต้องการลบข้อมูลใช่หรือไม่') == true) {
-                     window.location = `manage_user/delete_user.php?id=${id}`;
+                     window.location = `../manage_bike/delete_bike.php?id=${id}`;
                    }
                  };
                </script>
 
 
     <!-- ติดตั้งการใช้งาน Javascript ต่างๆ -->
-    <script src="node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
-    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/popper.js/dist/umd/popper.min.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script>
     $('.DataTable').DataTable({

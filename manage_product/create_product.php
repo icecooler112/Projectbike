@@ -4,6 +4,14 @@
      */
     session_start();
 ?>
+<?php
+$id = $_GET['id'];
+$sql = "SELECT user_id
+FROM `user`
+WHERE user_id = '$id'";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -104,6 +104,7 @@
       <th scope="col">ลำดับ</th>
       <th scope="col">ชื่อ-สกุล</th>
       <th scope="col">เบอร์โทรศัพท์</th>
+      <th scope="col">ตำแหน่งงาน</th>
       <th scope="col">แก้ไข</th>
       <th scope="col">ลบ</th>
     </tr>
@@ -122,6 +123,7 @@
               <td><?php echo $num; ?></td>
               <td><?php echo $row['staff_fname']; ?> <?php echo $row['staff_lname']; ?></td>
               <td><?php echo $row['staff_phone']; ?></td>
+              <td><?php echo $row['staff_duty']; ?></td>
               <td>
                 <a href="user_manage/edit_user.php?id=<?php echo $row['staff_id']; ?>" class="btn btn-sm btn-warning text-white ">
                   <i class="fas fa-edit"></i> แก้ไข

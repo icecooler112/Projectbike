@@ -39,11 +39,14 @@
                  */
                 $row = $result->fetch_assoc();
                 $_SESSION['id'] = $row['id'];
+                $_SESSION['user_id'] = $row['user_id'];
                 $_SESSION['First_Name'] = $row['First_Name'];
                 $_SESSION['Last_Name'] = $row['Last_Name'];
                 header('location:index.php');
             }else{
-              echo 'รหัสผ่านไม่ถูกต้อง';
+              echo '<div class="alert alert-warning alert-dismissible fade show test-center" role="alert">
+                    <strong>WARNING!</strong> Username หรือ Password ของคุณไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง.
+                  </div>';
             }
         }
     ?>

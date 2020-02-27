@@ -214,8 +214,8 @@
                                          <td><?php echo $row['numproduct']; ?></td>
                                          <td>
                                            <div class="custom-control custom-checkbox">
-                                          <input type="checkbox" class="custom-control-input" id="customControlValidation1" name="lists[]" required value="<?=$row['p_id']?>">
-                                          <label class="custom-control-label" for="customControlValidation1"> เลือก</label>
+                                          <input type="checkbox" class="custom-control-input" id="customControlValidation<?=$num?>" name="lists[]" value="<?=$row['p_id']?>">
+                                          <label class="custom-control-label" for="customControlValidation<?=$num?>"> เลือก</label>
                                         </div>
                                            <?php } ?>
                                          </td>
