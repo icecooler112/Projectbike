@@ -138,7 +138,7 @@ if($result){
      <div class="card">
          <form class="was-validated" action="" method="POST" enctype="multipart/form-data">
              <div class="card-header text-center text-white bg-primary">
-               <h3>กรอกข้อมูลสินค้า</h3>
+               <h3>แก้ไขข้อมูลสินค้า</h3>
              </div>
              <div class="card-body">
                 <input type="text" class="form-control" id="p_id" name="p_id" value="<?php echo $row['p_id']; ?>" hidden>

@@ -96,11 +96,11 @@
                    </div>
                </div>
            </nav>
-<center><p><h2>จัดการข้อมูลลูกค้า</h2></p></center>
+<center><p><h2>ข้อมูลลูกค้า</h2></p></center>
 <a href="manage_user/create_user.php" class="btn btn-success mb-2 float-right"><i class="fas fa-plus"></i> เพิ่มข้อมูลลูกค้า </a>
            <table class="table table-bordered text-center DataTable">
 
-             <thead>
+             <thead class="thead-light">
                <tr>
                  <th scope="col">ลำดับ</th>
                  <th scope="col">ชื่อ-สกุล</th>

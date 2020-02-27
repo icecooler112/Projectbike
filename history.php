@@ -99,7 +99,7 @@
 <center><p><h2>ประวัติการซ่อม</h2></p></center>
            <table class="table table-bordered text-center DataTable">
 
-             <thead>
+             <thead class="thead-light">
                <tr>
                  <th width="5%">ลำดับ</th>
                  <th width="20%">ชื่อ-สกุล</th>

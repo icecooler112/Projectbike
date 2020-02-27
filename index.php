@@ -177,14 +177,14 @@
                                                               <?php } ?>
                                                               </select>
                                             <div class="invalid-feedback">
-                                                กรุณาเลือกชื่อร้านผู้จำหน่าย
+                                                กรุณาเลือกชื่อพนักงาน
                                             </div>
                                         </div>
                                     </div>
-
+                                  </form>
                                     <table class="table table-bordered text-center DataTable">
 
-                           <thead>
+                           <thead class="thead-light">
                              <tr>
                                <th width="10%">ลำดับ</th>
                                <th width="40%">ชื่อสินค้า</th>
@@ -225,7 +225,7 @@
                                    <br>
                                    <center><input type="submit" name="submit" class="btn btn-success " value="ยืนยันการทำรายการ"></center>
                                 </div>
-                                </form>
+
                         </div>
                     </div>
                 </div>

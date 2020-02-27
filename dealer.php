@@ -100,7 +100,7 @@
 <a href="manage_staff/create_staff.php" class="btn btn-success mb-2 float-right"><i class="fas fa-plus"></i> เพิ่มข้อมูลร้านค้า </a>
            <table class="table table-bordered text-center DataTable">
 
-             <thead>
+             <thead class="thead-light">
                <tr>
                  <th width="5%">ลำดับ</th>
                  <th width="20%">ชื่อร้าน</th>

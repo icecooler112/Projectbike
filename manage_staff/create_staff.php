@@ -10,7 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>การจัดการข้อมูลลูกค้า</title>
+    <title>การจัดการข้อมูลพนักงาน</title>
     <!-- ติดตั้งการใช้งาน CSS ต่างๆ -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
@@ -26,21 +26,17 @@
          */
         if(isset($_POST['submit'])){
 
-                $sql = "INSERT INTO `user` (`user_id`, `first_name`, `last_name`, `idcard`, `user_address`, `phone`, `email`, `user_facebook`, `user_line`)
-                        VALUES (NULL,'".$_POST['first_name']."','".$_POST['last_name']."','".$_POST['idcard']."','".$_POST['user_address']."','".$_POST['phone']."','".$_POST['email']."','".$_POST['user_facebook']."','".$_POST['user_line']."');";
+                $sql = "INSERT INTO `staff` (`staff_id`, `staff_fname`, `staff_lname`, `staff_address`, `staff_email`, `staff_phone`, `staff_duty`)
+                        VALUES (NULL,'".$_POST['staff_fname']."','".$_POST['staff_lname']."','".$_POST['staff_address']."','".$_POST['staff_email']."','".$_POST['staff_phone']."','".$_POST['staff_duty']."');";
                 $result = $conn->query($sql);
-                $user_id = $conn->insert_id;
 
-                $sqlconn = "INSERT INTO `bike_user` (`bu_id`, `user_id`, `bike_id`, `color`, `year_bike`,`brand`)
-                                VALUES (NULL, '".$user_id."', '".$_POST['bike_id']."', '".$_POST['color']."', '".$_POST['year_bike']."', '".$_POST['brand']."');";
-                $results = $conn->query($sqlconn);
 
-                if($result == true AND $results == true){
+                if($result){
                     echo '<script> alert("สำเร็จ! เพิ่มข้อมูลสินค้าเรียบร้อย!")</script>';
-                    header('Refresh:1; url=../user.php');
+                    header('Refresh:1; url=../staff.php');
                 }else{
                   echo '<script> alert("ล้มเหลว! ไม่สามารถเพิ่มข้อมูลสินค้าได้ กรุกรุณาลองใหม่อีกครั้ง")</script>';
-                  header('Refresh:0; url=create_user.php');
+                  header('Refresh:0; url=create_staff.php');
 
 
             }
@@ -60,10 +56,10 @@
              <li>
                  <a href="../history.php"><i class="fas fa-bell"></i> ประวัติการซ่อม</a>
              </li>
-             <li class="active">
+             <li >
                  <a href="../user.php"><i class="fas fa-users"></i> ข้อมูลลูกค้า</a>
              </li>
-             <li>
+             <li class="active">
                  <a href="../staff.php"><i class="fas fa-user-cog"></i> ข้อมูลพนักงาน</a>
              </li>
 
@@ -125,116 +121,72 @@
                <div class="col-md-8 mx-auto mt-5">
                    <div class="card">
                        <form class="was-validated" action="" method="POST" enctype="multipart/form-data">
-                           <div class="card-header text-center">
-                               <h3>กรอกข้อมูลลูกค้า</h3>
+                           <div class="card-header text-center text-white bg-primary">
+                               <h3>กรอกข้อมูลพนักงาน</h3>
                            </div>
                            <div class="card-body">
                              <input type="text" class="form-control" id="user_id" name="user_id" hidden>
                                <div class="form-group row">
-                                   <label for="first_name" class="col-sm-3 col-form-label">ชื่อ</label>
+                                   <label for="staff_fname" class="col-sm-3 col-form-label">ชื่อ</label>
                                    <div class="col-sm-9">
-                                       <input type="text" class="form-control" id="first_name" name="first_name" required>
+                                       <input type="text" class="form-control" id="staff_fname" name="staff_fname" required>
                                        <div class="invalid-feedback">
-                                           กรุณากรอกชื่อลูกค้า
+                                           กรุณากรอกชื่อพนักงาน
                                        </div>
                                    </div>
                                </div>
                                <div class="form-group row">
-                                   <label for="last_name" class="col-sm-3 col-form-label">นามสกุล</label>
+                                   <label for="staff_lname" class="col-sm-3 col-form-label">นามสกุล</label>
                                    <div class="col-sm-9">
-                                       <input type="text" class="form-control" id="last_name" name="last_name" required>
+                                       <input type="text" class="form-control" id="staff_lname" name="staff_lname" required>
                                        <div class="invalid-feedback">
-                                           กรุณากรอกนามสกุลลูกค้า
+                                           กรุณากรอกนามสกุลพนักงาน
                                        </div>
                                    </div>
                                </div>
+
                                <div class="form-group row">
-                                   <label for="idcard" class="col-sm-3 col-form-label">รหัสบัตรปรจำตัวประชาชน</label>
+                                   <label for="staff_address" class="col-sm-3 col-form-label">ที่อยู่</label>
                                    <div class="col-sm-9">
-                                       <input type="text" class="form-control" id="idcard" onKeyUp="IsNumeric(this.value,this)" name="idcard" required>
-                                       <div class="invalid-feedback">
-                                           กรุณากรอกรหัสบัรหัสบัตรประจำตัวประชาชน 13 หลัก
-                                       </div>
-                                   </div>
-                               </div>
-                               <div class="form-group row">
-                                   <label for="user_address" class="col-sm-3 col-form-label">ที่อยู่ลูกค้า</label>
-                                   <div class="col-sm-9">
-                                       <textarea type="text" class="form-control" id="user_address" name="user_address" required></textarea>
+                                       <textarea type="text" class="form-control" id="staff_address" name="staff_address" required></textarea>
                                        <div class="invalid-feedback">
                                            กรุณากรอกที่อยู่
                                        </div>
                                    </div>
                                </div>
                                <div class="form-group row">
-                                   <label for="phone" class="col-sm-3 col-form-label">เบอร์โทรศัพท์</label>
+                                   <label for="staff_email" class="col-sm-3 col-form-label">Email</label>
                                    <div class="col-sm-9">
-                                       <input type="text" class="form-control" id="phone" onKeyUp="IsNumeric(this.value,this)"  name="phone" required>
-                                       <div class="invalid-feedback">
-                                           กรุณากรอกเบอร์เบอร์โทรศัพท์
-                                       </div>
-                                   </div>
-                               </div>
-                               <div class="form-group row">
-                                   <label for="email" class="col-sm-3 col-form-label">Email</label>
-                                   <div class="col-sm-9">
-                                       <input type="email" class="form-control" id="email" name="email" required>
+                                       <input type="email" class="form-control" id="staff_email" name="staff_email" required>
                                        <div class="invalid-feedback">
                                            กรุณากรอกอีเมลล์ ตามรูปแบบที่กำหนด (@hotmail.com / @gmail.com)
                                        </div>
                                    </div>
                                </div>
                                <div class="form-group row">
-                                   <label for="user_facebook" class="col-sm-3 col-form-label">Facebook</label>
+                                   <label for="staff_phone" class="col-sm-3 col-form-label">เบอร์โทรศัพท์</label>
                                    <div class="col-sm-9">
-                                       <input type="text" class="form-control" id="user_facebook" placeholder="ถ้ามี" name="user_facebook">
-                                   </div>
-                               </div>
-                               <div class="form-group row">
-                                   <label for="user_line" class="col-sm-3 col-form-label">Line</label>
-                                   <div class="col-sm-9">
-                                       <input type="text" class="form-control" id="user_line" placeholder="ถ้ามี" name="user_line">
-                                   </div>
-                               </div>
-                               <div class="form-group row">
-                                   <label for="bike_id" class="col-sm-3 col-form-label">เลขทะเบียนรถ</label>
-                                   <div class="col-sm-9">
-                                       <input type="text" class="form-control" id="bike_id" name="bike_id" required>
+                                       <input type="text" class="form-control" id="staff_phone" onKeyUp="IsNumeric(this.value,this)"  name="staff_phone" required>
                                        <div class="invalid-feedback">
-                                           กรุณากรอกเลขทะเบียนรถ
+                                           กรุณากรอกเบอร์โทรศัพท์
                                        </div>
                                    </div>
                                </div>
                                <div class="form-group row">
-                                   <label for="color" class="col-sm-3 col-form-label">สีรถ</label>
+                                   <label for="staff_duty" class="col-sm-3 col-form-label">ตำแหน่งงาน</label>
                                    <div class="col-sm-9">
-                                       <input type="text" class="form-control" id="color" name="color" required>
-                                       <div class="invalid-feedback">
-                                           กรุณากรอกสีรถ
-                                       </div>
+                                     <select class="form-control" id="staff_duty" name="staff_duty" required>
+                                       <option selected disabled value="">---ตำแหน่งงาน---</option>
+                                       <option>พนักงานซ่อม</option>
+                                       <option>พนักงานขาย</option>
+                                     </select>
+                                     <div class="invalid-feedback">
+                                         กรุณาเลือกการรัการรับประกันสินค้า
+                                     </div>
                                    </div>
-                               </div>
-                               <div class="form-group row">
-                                   <label for="year_bike" class="col-sm-3 col-form-label">ปีของรถ</label>
-                                   <div class="col-sm-9">
-                                       <input type="text" class="form-control" id="year_bike" onKeyUp="IsNumeric(this.value,this)" name="year_bike" required>
-                                       <div class="invalid-feedback">
-                                           กรุณากรอกปีของรถ
-                                       </div>
-                                   </div>
-                               </div>
-                               <div class="form-group row">
-                                   <label for="brand" class="col-sm-3 col-form-label">ยี่ห้อของรถ</label>
-                                   <div class="col-sm-9">
-                                       <input type="text" class="form-control" id="brand" name="brand" required>
-                                       <div class="invalid-feedback">
-                                           กรุณากรอกยี่ห้อของรถ
-                                       </div>
-                                   </div>
-                               </div>
-                           <div class="card-footer text-center">
-                               <input type="submit" name="submit" class="btn btn-success" value="ยืนยันการทำรายการ">
-                               <a class="btn btn-danger" href="../user.php">ยกเลิก</a>
+                                 </div>
+                              <center><input type="submit" name="submit" class="btn btn-success" value="ยืนยันการทำรายการ">
+                               <a class="btn btn-danger" href="../staff.php">ยกเลิก</a></center>
                            </div>
                        </form>
                    </div>
