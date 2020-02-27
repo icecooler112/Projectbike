@@ -16,7 +16,8 @@
 
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css"> -->
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
 
@@ -35,7 +36,7 @@
                  <a href="index.php"><i class="fas fa-toolbox mr-1"></i>เพิ่มข้อมูลการซ่อม</a>
              </li>
              <li>
-                 <a href="rp_history.php"><i class="fas fa-bell"></i> ประวัติการซ่อม</a>
+                 <a href="history.php"><i class="fas fa-bell"></i> ประวัติการซ่อม</a>
              </li>
              <li>
                  <a href="user.php"><i class="fas fa-users"></i> ข้อมูลลูกค้า</a>
@@ -48,7 +49,7 @@
                  <a href="product.php"><i class="fas fa-box"></i> ข้อมูลสินค้า</a>
              </li>
              <li>
-                 <a href="dl_shop.php"><i class="fas fa-truck"></i> ข้อมูลผู้จำหน่ายสินค้า</a>
+                 <a href="dealer.php"><i class="fas fa-truck"></i> ข้อมูลผู้จำหน่ายสินค้า</a>
              </li>
              <li>
                  <a href="show.php"><i class="fas fa-chart-line"></i> รายงาน</a>
@@ -65,7 +66,7 @@
                        <ul class="nav navbar-nav ml-auto ">
                            <li class="nav-item active">
                              <?php if(isset($_SESSION['id'])) { ?>
-                               <center><h5><?php echo $_SESSION["First_Name"];?> <?php echo $_SESSION["Last_Name"];?> <a class="btn btn-danger ml-2"data-toggle="modal" data-target="#LogoutModal" href="#">ออกจากระบบ</a></h5></center>
+                               <center><h5><?php echo $_SESSION["First_Name"];?> <?php echo $_SESSION["Last_Name"];?> <a class="btn btn-danger ml-2"data-toggle="modal" data-target="#LogoutModal" href="#"><i class="fas fa-sign-out-alt"></i> ออกจากระบบ</a></h5></center>
                                <div id="LogoutModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
                                  <div class="modal-dialog" role="document">
                                    <div class="modal-content">
@@ -76,7 +77,7 @@
                                        </button>
                                      </div>
                                      <div class="modal-body text-center">
-                                       <h1 style="font-size:5.5rem;"><i class="fa fa-sign-out text-danger" aria-hidden="true"></i></h1>
+                                       <h1 style="font-size:5.5rem;"><i class="fas fa-sign-out-alt text-danger"></i></h1>
                                        <p>คุณต้องการออกจากระบบหรือไม่?</p>
                                      </div>
                                      <div class="modal-footer">
@@ -95,12 +96,12 @@
                </div>
            </nav>
 <center><p><h2>จัดการข้อมูลสินค้า</h2></p></center>
-<a href="manage_product/create_product.php" class="btn btn-success mb-2 float-right"><i class="fas fa-plus-circle"></i> เพิ่มข้อมูลสินค้า </a>
+<a href="manage_product/create_product.php" class="btn btn-success mb-2 float-right"><i class="fas fa-plus"></i> เพิ่มข้อมูลสินค้า </a>
            <table class="table table-bordered text-center DataTable">
 
   <thead>
     <tr>
-      <th>ลำดับที่</th>
+      <th>ลำดับ</th>
       <th >รูปภาพ</th>
       <th>ชื่อสินค้า</th>
       <th >ราคาต่อชิ้น</th>
@@ -141,7 +142,7 @@
                   </a>
                 </td>
                 <td>
-                  <a href="product_manage/edit_product.php?id=<?php echo $row['p_id']; ?>" class="btn btn-sm btn-warning text-white ">
+                  <a href="manage_product/edit_product.php?id=<?php echo $row['p_id']; ?>" class="btn btn-sm btn-warning text-white ">
                     <i class="fas fa-edit"></i> แก้ไข
                   </a>
                 </td>
@@ -162,7 +163,7 @@
   <script>
         function deleteItem(id) {
           if (confirm('คุณต้องการลบข้อมูลใช่หรือไม่') == true) {
-            window.location = `product_manage/delete_product.php?id=${id}`;
+            window.location = `manage_product/delete_product.php?id=${id}`;
           }
         };
       </script>
@@ -173,11 +174,34 @@
     <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-
     <script>
-        $(document).ready(function() {
-            $('.DataTable').DataTable();
+    $('.DataTable').DataTable({
+            "oLanguage": {
+                "sEmptyTable": "ไม่มีข้อมูลในตาราง",
+                "sInfo": "แสดง _START_ ถึง _END_ จาก _TOTAL_ แถว",
+                "sInfoEmpty": "แสดง 0 ถึง 0 จาก 0 แถว",
+                "sInfoFiltered": "(กรองข้อมูล _MAX_ ทุกแถว)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ",",
+                "sLengthMenu": "แสดง _MENU_ แถว",
+                "sLoadingRecords": "กำลังโหลดข้อมูล...",
+                "sProcessing": "กำลังดำเนินการ...",
+                "sSearch": "ค้นหา: ",
+                "sZeroRecords": "ไม่พบข้อมูล",
+                "oPaginate": {
+                    "sFirst": "หน้าแรก",
+                    "sPrevious": "ก่อนหน้า",
+                    "sNext": "ถัดไป",
+                    "sLast": "หน้าสุดท้าย"
+                },
+                "oAria": {
+                    "sSortAscending": ": เปิดใช้งานการเรียงข้อมูลจากน้อยไปมาก",
+                    "sSortDescending": ": เปิดใช้งานการเรียงข้อมูลจากมากไปน้อย"
+                }
+            }
+
         });
-    </script>
+</script>
+
 </body>
 </html>

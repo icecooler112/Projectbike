@@ -35,10 +35,10 @@
              <li>
                  <a href="index.php"><i class="fas fa-toolbox mr-1"></i>เพิ่มข้อมูลการซ่อม</a>
              </li>
-             <li>
+             <li  class="active">
                  <a href="history.php"><i class="fas fa-bell"></i> ประวัติการซ่อม</a>
              </li>
-             <li class="active">
+             <li>
                  <a href="user.php"><i class="fas fa-users"></i> ข้อมูลลูกค้า</a>
              </li>
              <li>
@@ -96,28 +96,26 @@
                    </div>
                </div>
            </nav>
-<center><p><h2>จัดการข้อมูลลูกค้า</h2></p></center>
-<a href="manage_user/create_user.php" class="btn btn-success mb-2 float-right"><i class="fas fa-plus"></i> เพิ่มข้อมูลลูกค้า </a>
+<center><p><h2>ประวัติการซ่อม</h2></p></center>
            <table class="table table-bordered text-center DataTable">
 
              <thead>
                <tr>
-                 <th scope="col">ลำดับ</th>
-                 <th scope="col">ชื่อ-สกุล</th>
-                 <th scope="col">ที่อยู่</th>
-                 <th scope="col">เบอร์โทรศัพท์</th>
-                 <th scope="col">Email</th>
-                 <th scope="col">Facebook</th>
-                 <th scope="col">Line</th>
-                 <th scope="col">แก้ไข</th>
-                 <th scope="col">ลบ</th>
+                 <th width="5%">ลำดับ</th>
+                 <th width="20%">ชื่อ-สกุล</th>
+                 <th width="25%">รายละเอีรายละเอียดการซ่อม</th>
+                 <th width="10%">วันและเวลา</th>
+                 <th>ราคารวม</th>
+                 <th>รายละเอียด</th>
+                 <th>แก้ไข</th>
+                 <th>ลบ</th>
                </tr>
              </thead>
              <tbody>
              <?php
                       $search=isset($_GET['search']) ? $_GET['search']:'';
 
-                      $sql = "SELECT * FROM user WHERE first_name LIKE '%$search%'";
+                      $sql = "SELECT * FROM history WHERE h_id LIKE '%$search%'";
                       $result = $conn->query($sql);
                       $num = 0;
                       while ($row = $result->fetch_assoc()) {
@@ -125,20 +123,23 @@
                         ?>
                        <tr>
                          <td><?php echo $num; ?></td>
-                         <td><?php echo $row['first_name']; ?> <?php echo $row['last_name']; ?></td>
-                         <td><?php echo $row['user_address']; ?></td>
-                         <td><?php echo $row['phone']; ?></td>
-                         <td><?php echo $row['email']; ?></td>
-                         <td><?php echo $row['user_facebook']; ?></td>
-                         <td><?php echo $row['user_line']; ?></td>
+                         <td></td>
+                         <td></td>
+                         <td></td>
+                         <td></td>
                          <td>
-                           <a href="user_manage/edit_user.php?id=<?php echo $row['user_id']; ?>" class="btn btn-sm btn-warning text-white ">
+                           <a href="product_manage/detail.php?id=<?php echo $row['h_id']; ?>" class="btn btn-sm btn-primary  ">
+                             <i class="fas fa-eye"></i> รายละเอียด
+                           </a>
+                         </td>
+                         <td>
+                           <a href="user_manage/edit_user.php?id=<?php echo $row['h_id']; ?>" class="btn btn-sm btn-warning text-white ">
                              <i class="fas fa-edit"></i> แก้ไข
                            </a>
                          </td>
                          <td>
-                           <?php if ($row['user_id']) { ?>
-                             <a href="#" onclick="deleteItem(<?php echo $row['user_id']; ?>);" class="btn btn-sm btn-danger">
+                           <?php if ($row['h_id']) { ?>
+                             <a href="#" onclick="deleteItem(<?php echo $row['h_id']; ?>);" class="btn btn-sm btn-danger">
                                <i class="fas fa-trash-alt"></i> ลบ
                              </a>
                            <?php } ?>

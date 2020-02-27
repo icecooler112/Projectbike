@@ -11,7 +11,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>การจัดการข้อมูลลูกค้า</title>
+    <title>การจัจัดการข้อมูลสินค้า</title>
     <!-- ติดตั้งการใช้งาน CSS ต่างๆ -->
 
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
@@ -38,10 +38,10 @@
              <li>
                  <a href="history.php"><i class="fas fa-bell"></i> ประวัติการซ่อม</a>
              </li>
-             <li class="active">
+             <li>
                  <a href="user.php"><i class="fas fa-users"></i> ข้อมูลลูกค้า</a>
              </li>
-             <li>
+             <li class="active">
                  <a href="staff.php"><i class="fas fa-user-cog"></i> ข้อมูลพนักงาน</a>
              </li>
 
@@ -63,11 +63,10 @@
                <div class="container-fluid">
 
                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                       <ul class="nav navbar-nav ml-auto">
+                       <ul class="nav navbar-nav ml-auto ">
                            <li class="nav-item active">
                              <?php if(isset($_SESSION['id'])) { ?>
-                               <center><h5><?php echo $_SESSION["First_Name"];?> <?php echo $_SESSION["Last_Name"];?>  <a class="btn btn-danger ml-2"data-toggle="modal" data-target="#LogoutModal" href="#"><i class="fas fa-sign-out-alt"></i> ออกจากระบบ</a></h5></center>
-
+                               <center><h5><?php echo $_SESSION["First_Name"];?> <?php echo $_SESSION["Last_Name"];?> <a class="btn btn-danger ml-2"data-toggle="modal" data-target="#LogoutModal" href="#"><i class="fas fa-sign-out-alt"></i> ออกจากระบบ</a></h5></center>
                                <div id="LogoutModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
                                  <div class="modal-dialog" role="document">
                                    <div class="modal-content">
@@ -96,76 +95,68 @@
                    </div>
                </div>
            </nav>
-<center><p><h2>จัดการข้อมูลลูกค้า</h2></p></center>
-<a href="manage_user/create_user.php" class="btn btn-success mb-2 float-right"><i class="fas fa-plus"></i> เพิ่มข้อมูลลูกค้า </a>
-           <table class="table table-bordered text-center DataTable">
+<center><p><h2>จัดการข้อมูลพนักงาน</h2></p></center>
+<a href="manage_staff/create_staff.php" class="btn btn-success mb-2 float-right"><i class="fas fa-plus"></i> เพิ่มข้อมูลพนักงาน </a>
+<table class="table table-bordered text-center DataTable">
 
-             <thead>
-               <tr>
-                 <th scope="col">ลำดับ</th>
-                 <th scope="col">ชื่อ-สกุล</th>
-                 <th scope="col">ที่อยู่</th>
-                 <th scope="col">เบอร์โทรศัพท์</th>
-                 <th scope="col">Email</th>
-                 <th scope="col">Facebook</th>
-                 <th scope="col">Line</th>
-                 <th scope="col">แก้ไข</th>
-                 <th scope="col">ลบ</th>
-               </tr>
-             </thead>
-             <tbody>
-             <?php
-                      $search=isset($_GET['search']) ? $_GET['search']:'';
+  <thead>
+    <tr>
+      <th scope="col">ลำดับ</th>
+      <th scope="col">ชื่อ-สกุล</th>
+      <th scope="col">เบอร์โทรศัพท์</th>
+      <th scope="col">แก้ไข</th>
+      <th scope="col">ลบ</th>
+    </tr>
+  </thead>
+  <tbody>
+  <?php
+           $search=isset($_GET['search']) ? $_GET['search']:'';
 
-                      $sql = "SELECT * FROM user WHERE first_name LIKE '%$search%'";
-                      $result = $conn->query($sql);
-                      $num = 0;
-                      while ($row = $result->fetch_assoc()) {
-                        $num++;
-                        ?>
-                       <tr>
-                         <td><?php echo $num; ?></td>
-                         <td><?php echo $row['first_name']; ?> <?php echo $row['last_name']; ?></td>
-                         <td><?php echo $row['user_address']; ?></td>
-                         <td><?php echo $row['phone']; ?></td>
-                         <td><?php echo $row['email']; ?></td>
-                         <td><?php echo $row['user_facebook']; ?></td>
-                         <td><?php echo $row['user_line']; ?></td>
-                         <td>
-                           <a href="user_manage/edit_user.php?id=<?php echo $row['user_id']; ?>" class="btn btn-sm btn-warning text-white ">
-                             <i class="fas fa-edit"></i> แก้ไข
-                           </a>
-                         </td>
-                         <td>
-                           <?php if ($row['user_id']) { ?>
-                             <a href="#" onclick="deleteItem(<?php echo $row['user_id']; ?>);" class="btn btn-sm btn-danger">
-                               <i class="fas fa-trash-alt"></i> ลบ
-                             </a>
-                           <?php } ?>
-                         </td>
-                       </tr>
-                     <?php } ?>
+           $sql = "SELECT * FROM staff WHERE staff_fname LIKE '%$search%'";
+           $result = $conn->query($sql);
+           $num = 0;
+           while ($row = $result->fetch_assoc()) {
+             $num++;
+             ?>
+            <tr>
+              <td><?php echo $num; ?></td>
+              <td><?php echo $row['staff_fname']; ?> <?php echo $row['staff_lname']; ?></td>
+              <td><?php echo $row['staff_phone']; ?></td>
+              <td>
+                <a href="user_manage/edit_user.php?id=<?php echo $row['staff_id']; ?>" class="btn btn-sm btn-warning text-white ">
+                  <i class="fas fa-edit"></i> แก้ไข
+                </a>
+              </td>
+              <td>
+                <?php if ($row['staff_id']) { ?>
+                  <a href="#" onclick="deleteItem(<?php echo $row['staff_id']; ?>);" class="btn btn-sm btn-danger">
+                    <i class="fas fa-trash-alt"></i> ลบ
+                  </a>
+                <?php } ?>
+              </td>
+            </tr>
+          <?php } ?>
 
 
-             </tbody>
-           </table>
+  </tbody>
+</table>
 
 
-           <!-- Script Delete -->
-           <script>
-                 function deleteItem(id) {
-                   if (confirm('คุณต้องการลบข้อมูลใช่หรือไม่') == true) {
-                     window.location = `user_manage/delete_user.php?id=${id}`;
-                   }
-                 };
-               </script>
-
+<!-- Script Delete -->
+<script>
+      function deleteItem(id) {
+        if (confirm('คุณต้องการลบข้อมูลใช่หรือไม่') == true) {
+          window.location = `staff_manage/delete_staff.php?id=${id}`;
+        }
+      };
+    </script>
 
     <!-- ติดตั้งการใช้งาน Javascript ต่างๆ -->
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+
     <script>
     $('.DataTable').DataTable({
             "oLanguage": {

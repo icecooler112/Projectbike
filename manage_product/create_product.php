@@ -33,7 +33,7 @@
             if(move_uploaded_file($_FILES['image']['tmp_name'], '../upload/' .$new_name)){
 
 
-                $sql = "INSERT INTO `product` (`p_id`, `pname`,`price`, `numproduct`, `detail`, `image`, `dl_id`, `dl_insurance`,`dl_date`)
+                $sql = "INSERT INTO `product` (`p_id`, `pname`,`price`, `numproduct`, `detail`, `image`, `dl_id`, `dl_insurance`, `num_insurance`,`dl_date`)
                         VALUES (NULL, '".$_POST['pname']."',
                             '".$_POST['price']."',
                              '".$_POST['numproduct']."',
@@ -41,17 +41,15 @@
                                '". $new_name."',
                                '".$_POST['dl_id']."' ,
                                '".$_POST['dl_insurance']."',
+                               '".$_POST['num_insurance']."',
                                '".$_POST['dl_date']."');";
                 $result = $conn->query($sql);
                 if($result){
-                    echo '<div class="alert alert-success alert-dismissible fade show test-center" role="alert">
-                    <strong>สำเร็จ!</strong>ทำการเพิ่มข้อมูลสินค้าเรียบร้อย.
-                  </div>';
+                    echo '<script> alert("สำเร็จ! เพิ่มข้อมูลสินค้าเรียบร้อย!")</script>';
                     header('Refresh:1; url=../product.php');
                 }else{
-                  echo '<div class="alert alert-danger alert-dismissible fade show test-center" role="alert">
-                  <strong>ล้มเหลว!</strong>การเพิ่มข้อมูลสินค้าไม่สำเร็จ.
-                </div>';
+                  echo '<script> alert("ล้มเหลว! ไม่สามารถเพิ่มข้อมูลสินค้าได้ กรุกรุณาลองใหม่อีกครั้ง")</script>';
+                  header('Refresh:0; url=create_product.php');
 
                 }
             }
@@ -99,7 +97,7 @@
                        <ul class="nav navbar-nav ml-auto">
                            <li class="nav-item active">
                              <?php if(isset($_SESSION['id'])) { ?>
-                               <center><h5><?php echo $_SESSION["First_Name"];?> <?php echo $_SESSION["Last_Name"];?>  <a class="btn btn-danger ml-2"data-toggle="modal" data-target="#LogoutModal" href="#">ออกจากระบบ</a></h5></center>
+                               <center><h5><?php echo $_SESSION["First_Name"];?> <?php echo $_SESSION["Last_Name"];?>  <a class="btn btn-danger ml-2"data-toggle="modal" data-target="#LogoutModal" href="#"><i class="fas fa-sign-out-alt"></i> ออกจากระบบ</a></h5></center>
 
                                <div id="LogoutModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
                                  <div class="modal-dialog" role="document">
@@ -111,18 +109,18 @@
                                        </button>
                                      </div>
                                      <div class="modal-body text-center">
-                                       <h1 style="font-size:5.5rem;"><i class="fa fa-sign-out text-danger" aria-hidden="true"></i></h1>
+                                       <h1 style="font-size:5.5rem;"><i class="fas fa-sign-out-alt text-danger"></i></h1>
                                        <p>คุณต้องการออกจากระบบหรือไม่?</p>
                                      </div>
                                      <div class="modal-footer">
                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                                       <a href="logout.php" class="btn btn-danger">ออกจากระบบ</a>
+                                       <a href="../logout.php" class="btn btn-danger">ออกจากระบบ</a>
                                      </div>
                                    </div>
                                  </div>
                                </div>
 
-                             <?php }else header('location:login.php'); { ?>
+                             <?php }else header('location:../login.php'); { ?>
 
                   <?php } ?>
                            </li>
@@ -136,8 +134,8 @@
             <div class="col-md-8 mx-auto mt-5">
                 <div class="card">
                     <form class="was-validated" action="" method="POST" enctype="multipart/form-data">
-                        <div class="card-header text-center">
-                            กรอกข้อมูลสินค้า
+                        <div class="card-header text-center  text-white bg-primary">
+                          <h3>กรอกข้อมูลสินค้า</h3>
                         </div>
                         <div class="card-body">
                             <div class="form-group row">
@@ -161,7 +159,7 @@
                             <div class="form-group row">
                                 <label for="numproduct" class="col-sm-3 col-form-label">จำนวนสินค้า</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="numproduct" name="numproduct" required>
+                                    <input type="text" class="form-control" id="numproduct" onKeyUp="IsNumeric(this.value,this)" name="numproduct" required>
                                     <div class="invalid-feedback">
                                         กรุณากรอกจำนวนสินค้าที่มี
                                     </div>
@@ -178,38 +176,33 @@
                             </div>
                             <div class="form-group row">
                                 <label for="dl_insurance" class="col-sm-3 col-form-label">การรับประกันสินค้า</label>
-                                <div class="col-sm-9">
-                                  <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input" required>
-                                    <label class="custom-control-label" for="customRadioInline1">ไม่มี</label>
+                                <div class="col-sm-5">
+                                  <select class="form-control" id="dl_insurance" name="dl_insurance" required>
+                                    <option selected disabled value="">การรับประกันสินค้า</option>
+                                    <option>ไม่มี</option>
+                                    <option>เดือน</option>
+                                    <option>ปี</option>
+                                    <option>ตลอดชีพ</option>
+                                  </select>
+                                  <div class="invalid-feedback">
+                                      กรุณาเลือกการรัการรับประกันสินค้า
                                   </div>
-                                  <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input" required>
-                                    <label class="custom-control-label" for="customRadioInline2">เดือน</label>
-                                  </div>
-                                  <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" id="customRadioInline3" name="customRadioInline1" class="custom-control-input" required>
-                                    <label class="custom-control-label" for="customRadioInline3">ปี</label>
-
-                                  <div class="col-sm-4">
-                                    <select class="form-control" id = "dl_id" name="dl_id">
-                                          <option value="" disabled selected>----- กรุณาเลือกจำนวน -----</option>
-                                          <option value="1">1</option>
-                                          <option value="2">2</option>
-                                          <option value="3">3</option>
-                                          <option value="4">4</option>
-                                          <option value="5">5</option>
-                                      </select>
-                                              </div>
-                                          </div>
-                                                    <div class="col-sm-9">
-                                                    <div class="custom-control custom-radio custom-control-inline">
-                                                      <input type="radio" id="customRadioInline4" name="customRadioInline1" class="custom-control-input" required>
-                                                      <label class="custom-control-label" for="customRadioInline4">ตลอดชีพ</label>
-                                                    </div>
-                                                  </div>
                                 </div>
-                            </div>
+                                <div class="col-sm-4">
+                                  <select class="form-control" id="num_insurance" name="num_insurance" required>
+                                    <option selected disabled value="">ระยะเวลา</option>
+                                    <option>0</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                  </select>
+                                  <div class="invalid-feedback">
+                                      กรุณาเลือกเวลาการรับประกันสินค้า (ถ้าไม่มี หรือ ตลอดชีพให้เลือกเป็น 0)
+                                  </div>
+                                </div>
+                                </div>
                             <div class="form-group row">
                                 <label for="dl_date" class="col-sm-3 col-form-label">วันที่รับสินค้ามา</label>
                                 <div class="col-sm-9">
@@ -245,9 +238,8 @@
                                     </div>
                                 </div>
                             </div>
-                        <div class="card-footer text-center">
-                            <input type="submit" name="submit" class="btn btn-success" value="ยืนยัน">
-                            <a class="btn btn-danger" href="../product.php">ยกเลิก</a>
+                            <center><input type="submit" name="submit" class="btn btn-success" value="ยืนยันการทำรายการ">
+                            <a class="btn btn-danger" href="../product.php">ยกเลิก</a></center>
                         </div>
                         </form>
                 </div>
@@ -258,7 +250,7 @@
     <script>
             // ตรวจสอบการกรอกข้อมูลชนิดที่ไม่ช่ตัวเลข
             function IsNumeric(sText, obj) {
-                var ValidChars = "0123456789";
+                var ValidChars = "0123456789,";
                 var IsNumber = true;
                 var Char;
                 for (i = 0; i < sText.length && IsNumber == true; i++) {
@@ -268,7 +260,7 @@
                     }
                 }
                 if (IsNumber == false) {
-                    alert("กรุณากรอกเฉพาะตัวเลข 0-9");
+                    alert("กรอกได้เฉพาะตัวเลข 0-9 เท่านั้น");
                     obj.value = sText.substr(0, sText.length - 10);
                 }
             }
