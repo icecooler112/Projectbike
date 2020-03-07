@@ -3,6 +3,9 @@
      * เปิดใช้งาน Session
      */
     session_start();
+    if (!$_SESSION['id']) {
+        header("Location:../login.php");
+    } else {
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -125,7 +128,7 @@
                                <h3>กรอกข้อมูลพนักงาน</h3>
                            </div>
                            <div class="card-body">
-                             <input type="text" class="form-control" id="user_id" name="user_id" hidden>
+                             <input type="text" class="form-control" id="staff_id" name="staff_id" hidden>
                                <div class="form-group row">
                                    <label for="staff_fname" class="col-sm-3 col-form-label">ชื่อ</label>
                                    <div class="col-sm-9">
@@ -217,3 +220,4 @@
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
+<?php } ?>

@@ -7,20 +7,13 @@
         header("Location:../login.php");
     } else {
 ?>
-<?php include('../connect.php'); ?>
-<?php
-$id = $_GET['id'];
-$sql = "SELECT  `user_id`, `first_name`,`last_name`, `idcard`, `user_address`,`phone`,`email`,`user_facebook`,`user_line` FROM `user`  WHERE user_id = '" . $id . "' ";
-$result = $conn->query($sql);
-$row = $result->fetch_assoc();
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>การจัดการข้อมูลลูกค้า</title>
+    <title>การจัดการข้อมูลผู้จำหน่ายสินค้า</title>
     <!-- ติดตั้งการใช้งาน CSS ต่างๆ -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
@@ -30,26 +23,22 @@ $row = $result->fetch_assoc();
 </head>
 <body>
   <?php
-
+        require_once('../connect.php'); // ดึงไฟล์เชื่อมต่อ Database เข้ามาใช้งาน
+        /**
+         * ตรวจสอบเงื่อนไขที่ว่า ตัวแปร $_POST['submit'] ได้ถูกกำหนดขึ้นมาหรือไม่
+         */
         if(isset($_POST['submit'])){
 
-                $sql = "UPDATE `user`
-                        SET `first_name` = '".$_POST['first_name']."',
-                          `last_name` = '".$_POST['last_name']."',
-                           `idcard` = '".$_POST['idcard']."',
-                            `user_address` = '".$_POST['user_address']."',
-                             `phone` = '".$_POST['phone']."',
-                              `email` = '".$_POST['email']."',
-                               `user_facebook` = '".$_POST['user_facebook']."',
-                                `user_line` = '".$_POST['user_line']."'
-                                WHERE user.`user_id` = '".$_POST['user_id']."';";
-                                $result = $conn->query($sql);
-                    if($result){
-                    echo '<script> alert("สำเร็จ! แก้ไขข้อมูลลูกค้าเรียบร้อย!")</script>';
-                    header('Refresh:0; url=../user.php');
+                $sql = "INSERT INTO `dealer` (`dl_id`, `dl_nameshop`, `dl_address`, `dl_email`, `dl_phone`, `facebook`, `line`)
+                        VALUES (NULL,'".$_POST['dl_nameshop']."','".$_POST['dl_address']."','".$_POST['dl_email']."','".$_POST['dl_phone']."','".$_POST['facebook']."','".$_POST['line']."');";
+                $result = $conn->query($sql);
+
+                if($result){
+                    echo '<script> alert("สำเร็จ! เพิ่มข้อมูลสินค้าเรียบร้อย!")</script>';
+                    header('Refresh:0; url=../dealer.php');
                 }else{
-                  echo '<script> alert("ล้มเหลว! ไม่สามารถแก้ไขข้อมูลลูกค้าได้ กรุกรุณาลองใหม่อีกครั้ง")</script>';
-                  header('Refresh:1; url=create_user.php');
+                  echo '<script> alert("ล้มเหลว! ไม่สามารถเพิ่มข้อมูลสินค้าได้ กรุกรุณาลองใหม่อีกครั้ง")</script>';
+                  header('Refresh:0; url=create_dealer.php');
 
 
             }
@@ -135,80 +124,61 @@ $row = $result->fetch_assoc();
                    <div class="card">
                        <form class="was-validated" action="" method="POST" enctype="multipart/form-data">
                            <div class="card-header text-center text-white bg-primary">
-                               <h3>กรอกข้อมูลลูกค้า</h3>
+                               <h3>กรอกข้อมูลผู้จำหน่ายสินค้า</h3>
                            </div>
                            <div class="card-body">
-                             <input type="text" class="form-control" id="user_id" name="user_id" value="<?php echo $row['user_id']; ?>" hidden>
-
+                             <input type="text" class="form-control" id="dl_id" name="dl_id" hidden>
                                <div class="form-group row">
-                                   <label for="first_name" class="col-sm-3 col-form-label">ชื่อ</label>
+                                   <label for="dl_nameshop" class="col-sm-3 col-form-label">ชื่อร้านค้า</label>
                                    <div class="col-sm-9">
-                                       <input type="text" class="form-control" id="first_name" name="first_name" value="<?php echo $row['first_name']; ?>" required>
+                                       <input type="text" class="form-control" id="dl_nameshop" name="dl_nameshop" required>
                                        <div class="invalid-feedback">
-                                           กรุณากรอกชื่อลูกค้า
+                                           กรุณากรอกชื่อร้านค้า
                                        </div>
                                    </div>
                                </div>
                                <div class="form-group row">
-                                   <label for="last_name" class="col-sm-3 col-form-label">นามสกุล</label>
+                                   <label for="dl_address" class="col-sm-3 col-form-label">ที่อยู่</label>
                                    <div class="col-sm-9">
-                                       <input type="text" class="form-control" id="last_name" name="last_name" value="<?php echo $row['last_name']; ?>" required>
-                                       <div class="invalid-feedback">
-                                           กรุณากรอกนามสกุลลูกค้า
-                                       </div>
-                                   </div>
-                               </div>
-                               <div class="form-group row">
-                                   <label for="idcard" class="col-sm-3 col-form-label">รหัสบัตรปรจำตัวประชาชน</label>
-                                   <div class="col-sm-9">
-                                       <input type="text" class="form-control" id="idcard" onKeyUp="IsNumeric(this.value,this)" name="idcard" value="<?php echo $row['idcard']; ?>" required>
-                                       <div class="invalid-feedback">
-                                           กรุณากรอกรหัสบัรหัสบัตรประจำตัวประชาชน 13 หลัก
-                                       </div>
-                                   </div>
-                               </div>
-                               <div class="form-group row">
-                                   <label for="user_address" class="col-sm-3 col-form-label">ที่อยู่ลูกค้า</label>
-                                   <div class="col-sm-9">
-                                       <textarea type="text" class="form-control" id="user_address" name="user_address" required><?php echo nl2br($row['user_address']); ?></textarea>
+                                       <textarea type="text" class="form-control" id="dl_address" name="dl_address" required></textarea>
                                        <div class="invalid-feedback">
                                            กรุณากรอกที่อยู่
                                        </div>
                                    </div>
                                </div>
                                <div class="form-group row">
-                                   <label for="phone" class="col-sm-3 col-form-label">เบอร์โทรศัพท์</label>
+                                   <label for="dl_email" class="col-sm-3 col-form-label">Email</label>
                                    <div class="col-sm-9">
-                                       <input type="text" class="form-control" id="phone" onKeyUp="IsNumeric(this.value,this)"  name="phone" value="<?php echo $row['phone']; ?>" required>
+                                       <input type="email" class="form-control" id="dl_email" name="dl_email" required>
+                                       <div class="invalid-feedback">
+                                           กรุณากรอกอีเมล ตามรูปแบบที่กำหนด (@hotmail.com / @gmail.com)
+                                       </div>
+                                   </div>
+                               </div>
+                               <div class="form-group row">
+                                   <label for="dl_phone" class="col-sm-3 col-form-label">เบอร์โทรศัพท์</label>
+                                   <div class="col-sm-9">
+                                       <input type="text" class="form-control" id="dl_phone" onKeyUp="IsNumeric(this.value,this)" name="dl_phone" required>
                                        <div class="invalid-feedback">
                                            กรุณากรอกเบอร์เบอร์โทรศัพท์
                                        </div>
                                    </div>
                                </div>
                                <div class="form-group row">
-                                   <label for="email" class="col-sm-3 col-form-label">Email</label>
+                                   <label for="facebook" class="col-sm-3 col-form-label">Facebook</label>
                                    <div class="col-sm-9">
-                                       <input type="email" class="form-control" id="email" name="email" value="<?php echo $row['email']; ?>" required>
-                                       <div class="invalid-feedback">
-                                           กรุณากรอกอีเมลล์ ตามรูปแบบที่กำหนด (@hotmail.com / @gmail.com)
-                                       </div>
+                                       <input type="text" class="form-control" id="facebook" placeholder="ถ้ามี" name="facebook">
                                    </div>
                                </div>
                                <div class="form-group row">
-                                   <label for="user_facebook" class="col-sm-3 col-form-label">Facebook</label>
+                                   <label for="line" class="col-sm-3 col-form-label">Line</label>
                                    <div class="col-sm-9">
-                                       <input type="text" class="form-control" id="user_facebook" placeholder="ถ้ามี" name="user_facebook" value="<?php echo $row['user_facebook']; ?>">
-                                   </div>
-                               </div>
-                               <div class="form-group row">
-                                   <label for="user_line" class="col-sm-3 col-form-label">Line</label>
-                                   <div class="col-sm-9">
-                                       <input type="text" class="form-control" id="user_line" placeholder="ถ้ามี" name="user_line" value="<?php echo $row['user_line']; ?>">
+                                       <input type="text" class="form-control" id="line" placeholder="ถ้ามี" name="line">
                                    </div>
                                </div>
 
                                <center><input type="submit" name="submit" class="btn btn-success" value="ยืนยันการทำรายการ">
-                               <a class="btn btn-danger" href="../user.php">ยกเลิก</a></center>
+                               <a class="btn btn-danger" href="../dealer.php">ยกเลิก</a></center>
                            </div>
                        </form>
                    </div>

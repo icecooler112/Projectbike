@@ -6,11 +6,12 @@
     if (!$_SESSION['id']) {
         header("Location:../login.php");
     } else {
+
 ?>
-<?php include('../connect.php'); ?>
+<?php     include('../connect.php'); // ดึงไฟล์เชื่อมต่อ Database เข้ามาใช้งาน ?>
 <?php
 $id = $_GET['id'];
-$sql = "SELECT  `user_id`, `first_name`,`last_name`, `idcard`, `user_address`,`phone`,`email`,`user_facebook`,`user_line` FROM `user`  WHERE user_id = '" . $id . "' ";
+$sql = "SELECT  `bu_id`, `user_id`,`bike_id`, `color`, `year_bike`,`brand` FROM `bike_user`  WHERE user_id = '" . $id . "' ";
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
 ?>
@@ -33,16 +34,14 @@ $row = $result->fetch_assoc();
 
         if(isset($_POST['submit'])){
 
-                $sql = "UPDATE `user`
-                        SET `first_name` = '".$_POST['first_name']."',
-                          `last_name` = '".$_POST['last_name']."',
-                           `idcard` = '".$_POST['idcard']."',
-                            `user_address` = '".$_POST['user_address']."',
-                             `phone` = '".$_POST['phone']."',
-                              `email` = '".$_POST['email']."',
-                               `user_facebook` = '".$_POST['user_facebook']."',
-                                `user_line` = '".$_POST['user_line']."'
-                                WHERE user.`user_id` = '".$_POST['user_id']."';";
+                $sql = "UPDATE `bike_user`
+                        SET `bu_id` = '".$_POST['bu_id']."',
+                          `user_id` = '".$_POST['user_id']."',
+                           `bike_id` = '".$_POST['bike_id']."',
+                            `color` = '".$_POST['color']."',
+                             `year_bike` = '".$_POST['year_bike']."',
+                              `brand` = '".$_POST['brand']."'
+                                WHERE bike_user.`user_id` = '".$_POST['user_id']."';";
                                 $result = $conn->query($sql);
                     if($result){
                     echo '<script> alert("สำเร็จ! แก้ไขข้อมูลลูกค้าเรียบร้อย!")</script>';
@@ -122,99 +121,71 @@ $row = $result->fetch_assoc();
 
                              <?php }else header('location:../login.php'); { ?>
 
-                  <?php } ?>
+
                            </li>
                        </ul>
                    </div>
                </div>
            </nav>
-
            <div class="container">
            <div class="row">
                <div class="col-md-8 mx-auto mt-5">
                    <div class="card">
                        <form class="was-validated" action="" method="POST" enctype="multipart/form-data">
                            <div class="card-header text-center text-white bg-primary">
-                               <h3>กรอกข้อมูลลูกค้า</h3>
+                               <h3>กรอกข้อมูข้อมูลรถจักรยานยนต์</h3>
                            </div>
                            <div class="card-body">
-                             <input type="text" class="form-control" id="user_id" name="user_id" value="<?php echo $row['user_id']; ?>" hidden>
-
-                               <div class="form-group row">
-                                   <label for="first_name" class="col-sm-3 col-form-label">ชื่อ</label>
-                                   <div class="col-sm-9">
-                                       <input type="text" class="form-control" id="first_name" name="first_name" value="<?php echo $row['first_name']; ?>" required>
-                                       <div class="invalid-feedback">
-                                           กรุณากรอกชื่อลูกค้า
-                                       </div>
-                                   </div>
-                               </div>
-                               <div class="form-group row">
-                                   <label for="last_name" class="col-sm-3 col-form-label">นามสกุล</label>
-                                   <div class="col-sm-9">
-                                       <input type="text" class="form-control" id="last_name" name="last_name" value="<?php echo $row['last_name']; ?>" required>
-                                       <div class="invalid-feedback">
-                                           กรุณากรอกนามสกุลลูกค้า
-                                       </div>
-                                   </div>
-                               </div>
-                               <div class="form-group row">
-                                   <label for="idcard" class="col-sm-3 col-form-label">รหัสบัตรปรจำตัวประชาชน</label>
-                                   <div class="col-sm-9">
-                                       <input type="text" class="form-control" id="idcard" onKeyUp="IsNumeric(this.value,this)" name="idcard" value="<?php echo $row['idcard']; ?>" required>
-                                       <div class="invalid-feedback">
-                                           กรุณากรอกรหัสบัรหัสบัตรประจำตัวประชาชน 13 หลัก
-                                       </div>
-                                   </div>
-                               </div>
-                               <div class="form-group row">
-                                   <label for="user_address" class="col-sm-3 col-form-label">ที่อยู่ลูกค้า</label>
-                                   <div class="col-sm-9">
-                                       <textarea type="text" class="form-control" id="user_address" name="user_address" required><?php echo nl2br($row['user_address']); ?></textarea>
-                                       <div class="invalid-feedback">
-                                           กรุณากรอกที่อยู่
-                                       </div>
-                                   </div>
-                               </div>
-                               <div class="form-group row">
-                                   <label for="phone" class="col-sm-3 col-form-label">เบอร์โทรศัพท์</label>
-                                   <div class="col-sm-9">
-                                       <input type="text" class="form-control" id="phone" onKeyUp="IsNumeric(this.value,this)"  name="phone" value="<?php echo $row['phone']; ?>" required>
-                                       <div class="invalid-feedback">
-                                           กรุณากรอกเบอร์เบอร์โทรศัพท์
-                                       </div>
-                                   </div>
-                               </div>
-                               <div class="form-group row">
-                                   <label for="email" class="col-sm-3 col-form-label">Email</label>
-                                   <div class="col-sm-9">
-                                       <input type="email" class="form-control" id="email" name="email" value="<?php echo $row['email']; ?>" required>
-                                       <div class="invalid-feedback">
-                                           กรุณากรอกอีเมลล์ ตามรูปแบบที่กำหนด (@hotmail.com / @gmail.com)
-                                       </div>
-                                   </div>
-                               </div>
-                               <div class="form-group row">
-                                   <label for="user_facebook" class="col-sm-3 col-form-label">Facebook</label>
-                                   <div class="col-sm-9">
-                                       <input type="text" class="form-control" id="user_facebook" placeholder="ถ้ามี" name="user_facebook" value="<?php echo $row['user_facebook']; ?>">
-                                   </div>
-                               </div>
-                               <div class="form-group row">
-                                   <label for="user_line" class="col-sm-3 col-form-label">Line</label>
-                                   <div class="col-sm-9">
-                                       <input type="text" class="form-control" id="user_line" placeholder="ถ้ามี" name="user_line" value="<?php echo $row['user_line']; ?>">
-                                   </div>
-                               </div>
+                             <input type="text" class="form-control" id="bu_id" name="bu_id" value="<?php echo $row['bu_id']; ?>" hidden>
+                             <input type="text" class="form-control" id="user_id" value="<?php echo $row['user_id']; ?>" name="user_id" hidden >
+                             <div class="form-group row">
+                                 <label for="bike_id" class="col-sm-3 col-form-label">เลขทะเบียนรถ</label>
+                                 <div class="col-sm-9">
+                                     <input type="text" class="form-control" id="bike_id" name="bike_id" value="<?php echo $row['bike_id']; ?>"required>
+                                     <div class="invalid-feedback">
+                                         กรุณากรอกเลขทะเบียนรถ
+                                     </div>
+                                 </div>
+                             </div>
+                             <div class="form-group row">
+                                 <label for="color" class="col-sm-3 col-form-label">สีรถ</label>
+                                 <div class="col-sm-9">
+                                     <input type="text" class="form-control" id="color" name="color" value="<?php echo $row['color']; ?>" required>
+                                     <div class="invalid-feedback">
+                                         กรุณากรอกสีรถ
+                                     </div>
+                                 </div>
+                             </div>
+                             <div class="form-group row">
+                                 <label for="year_bike" class="col-sm-3 col-form-label">ปีของรถ</label>
+                                 <div class="col-sm-9">
+                                     <input type="text" class="form-control" id="year_bike" onKeyUp="IsNumeric(this.value,this)" name="year_bike" value="<?php echo $row['year_bike']; ?>"  required>
+                                     <div class="invalid-feedback">
+                                         กรุณากรอกปีของรถ
+                                     </div>
+                                 </div>
+                             </div>
+                             <div class="form-group row">
+                                 <label for="brand" class="col-sm-3 col-form-label">ยี่ห้อของรถ</label>
+                                 <div class="col-sm-9">
+                                     <input type="text" class="form-control" id="brand" name="brand" value="<?php echo $row['brand']; ?>"  required>
+                                     <div class="invalid-feedback">
+                                         กรุณากรอกยี่ห้อของรถ
+                                     </div>
+                                 </div>
+                             </div>
 
                                <center><input type="submit" name="submit" class="btn btn-success" value="ยืนยันการทำรายการ">
-                               <a class="btn btn-danger" href="../user.php">ยกเลิก</a></center>
+
+                                <a class="btn btn-danger text-center" href="../manage_user/bike_show.php?id=<?php echo $row['user_id']; ?>">ย้อนกลับ</a></center>
+
                            </div>
                        </form>
                    </div>
                </div>
            </div>
        </div>
+       <?php } ?>
     <script>
             // ตรวจสอบการกรอกข้อมูลชนิดที่ไม่ช่ตัวเลข
             function IsNumeric(sText, obj) {

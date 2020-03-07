@@ -3,6 +3,9 @@
      * เปิดใช้งาน Session
      */
     session_start();
+    if (!$_SESSION['id']) {
+        header("Location:../login.php");
+    } else {
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -224,3 +227,4 @@
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
+<?php } ?>

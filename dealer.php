@@ -3,6 +3,9 @@
      * เปิดใช้งาน Session
      */
     session_start();
+    if (!$_SESSION['id']) {
+        header("Location:login.php");
+    } else {
 ?>
 <?php     include('connect.php'); // ดึงไฟล์เชื่อมต่อ Database เข้ามาใช้งาน ?>
 <!DOCTYPE html>
@@ -11,7 +14,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>การจัดการข้อมูลลูกค้า</title>
+    <title>การจัดการข้อมูลผู้จำหน่ายสินค้า</title>
     <!-- ติดตั้งการใช้งาน CSS ต่างๆ -->
 
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
@@ -97,7 +100,7 @@
                </div>
            </nav>
 <center><p><h2>ข้อมูลผู้จำหน่ายสินค้า</h2></p></center>
-<a href="manage_staff/create_staff.php" class="btn btn-success mb-2 float-right"><i class="fas fa-plus"></i> เพิ่มข้อมูลร้านค้า </a>
+<a href="manage_dealer/create_dealer.php" class="btn btn-success mb-2 float-right"><i class="fas fa-plus"></i> เพิ่มข้อมูลผู้จำหน่ายสินค้า</a>
            <table class="table table-bordered text-center DataTable">
 
              <thead class="thead-light">
@@ -169,7 +172,7 @@
     <script>
     $('.DataTable').DataTable({
             "oLanguage": {
-                "sEmptyTable": "ไม่มีข้อมูลในตาราง",
+                "sEmptyTable": "ไม่พบข้อมูลในตาราง",
                 "sInfo": "แสดง _START_ ถึง _END_ จาก _TOTAL_ แถว",
                 "sInfoEmpty": "แสดง 0 ถึง 0 จาก 0 แถว",
                 "sInfoFiltered": "(กรองข้อมูล _MAX_ ทุกแถว)",
@@ -197,3 +200,4 @@
 
 </body>
 </html>
+<?php } ?>

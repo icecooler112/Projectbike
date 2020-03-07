@@ -3,6 +3,9 @@
      * เปิดใช้งาน Session
      */
     session_start();
+    if (!$_SESSION['id']) {
+        header("Location:login.php");
+    } else {
 ?>
 <?php     include('connect.php'); // ดึงไฟล์เชื่อมต่อ Database เข้ามาใช้งาน ?>
 <!DOCTYPE html>
@@ -177,7 +180,7 @@
     <script>
     $('.DataTable').DataTable({
             "oLanguage": {
-                "sEmptyTable": "ไม่มีข้อมูลในตาราง",
+                "sEmptyTable": "ไม่พบข้อมูลในตาราง",
                 "sInfo": "แสดง _START_ ถึง _END_ จาก _TOTAL_ แถว",
                 "sInfoEmpty": "แสดง 0 ถึง 0 จาก 0 แถว",
                 "sInfoFiltered": "(กรองข้อมูล _MAX_ ทุกแถว)",
@@ -205,3 +208,4 @@
 
 </body>
 </html>
+<?php } ?>

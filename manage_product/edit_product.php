@@ -3,11 +3,14 @@
      * เปิดใช้งาน Session
      */
     session_start();
+    if (!$_SESSION['id']) {
+        header("Location:../login.php");
+    } else {
 ?>
 <?php include('../connect.php'); ?>
 <?php
 $id = $_GET['id'];
-$sql = "SELECT  `p_id`, `pname`,`price`, `numproduct`, `detail`,`image` FROM `product`  WHERE p_id = '" . $id . "' ";
+$sql = "SELECT  `p_id`, `pname`,`price`, `numproduct`, `detail`,`image`,`dl_id`,`dl_insurance`,`num_insurance`,`dl_date` FROM `product`  WHERE p_id = '" . $id . "' ";
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
 ?>
@@ -39,7 +42,11 @@ $sql = "UPDATE `product`
             `price` = '".$_POST['price']."',
             `numproduct` = '".$_POST['numproduct']."',
             `detail` = '".$_POST['detail']."',
-            `image` = '".$new_name."'
+            `image` = '".$new_name."',
+            `dl_id` = '".$_POST['dl_id']."',
+            `dl_insurance` = '".$_POST['dl_insurance']."',
+            `num_insurance` = '".$_POST['num_insurance']."',
+            `dl_date` = '".$_POST['dl_date']."'
          WHERE product.`id` = '".$_POST['id']."';";
 
 
@@ -183,7 +190,7 @@ if($result){
                      <label for="dl_insurance" class="col-sm-3 col-form-label">การรับประกันสินค้า</label>
                      <div class="col-sm-5">
                        <select class="form-control" id="dl_insurance" name="dl_insurance" required>
-                         <option selected disabled value="">การรับประกันสินค้า</option>
+                         <option selected disabled value="<?php echo $row['dl_insurance']; ?>">การรับประกันสินค้า</option>
                          <option>ไม่มี</option>
                          <option>เดือน</option>
                          <option>ปี</option>
@@ -194,8 +201,8 @@ if($result){
                        </div>
                      </div>
                      <div class="col-sm-4">
-                       <select class="form-control" id="num_insurance" name="num_insurance" required>
-                         <option selected disabled value="<?php echo $row['num_insurance']; ?>">ระยะเวลา...</option>
+                       <select class="form-control" id="dl_insurance" name="dl_insurance" value="<?php echo $row['dl_insurance']; ?>">
+                         <option selected disabled>ระยะเวลา...</option>
                          <option>0</option>
                          <option>1</option>
                          <option>2</option>
@@ -220,7 +227,7 @@ if($result){
                  <div class="form-group row">
                      <label for="image" class="col-sm-3 col-form-label">อัพโหลดรูปภาพ</label>
                      <div class="col-sm-9">
-                         <input type="file" class="form-control" id="image" name="image" required>
+                         <input type="file" class="form-control" id="image" name="image">
                          <div class="invalid-feedback">
                              กรุณาใส่รูปภาพที่มีนามสกุลไฟล์ .jpg / .png
                          </div>
@@ -230,7 +237,7 @@ if($result){
                      <label for="dl_id" class="col-sm-3 col-form-label">เลือกชื่อร้านผู้จำหน่าย</label>
                      <div class="col-sm-9">
                        <select class="form-control" id = "dl_id" name="dl_id" required>
-                               <option value="" disabled selected>----- กรุณาเลือก -----</option>
+                               <option value="<?php echo $row['dl_nameshop']; ?>" disabled selected>----- กรุณาเลือก -----</option>
                                  <?php $sql = "SELECT * FROM dealer";
                                  $result = $conn->query($sql);
                                  while ($row = $result->fetch_assoc()) {
@@ -276,3 +283,4 @@ if($result){
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
+<?php } ?>

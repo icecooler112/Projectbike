@@ -3,14 +3,9 @@
      * เปิดใช้งาน Session
      */
     session_start();
-?>
-<?php
-$id = $_GET['id'];
-$sql = "SELECT user_id
-FROM `user`
-WHERE user_id = '$id'";
-$result = $conn->query($sql);
-$row = $result->fetch_assoc();
+    if (!$_SESSION['id']) {
+        header("Location:../login.php");
+    } else {
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -279,3 +274,4 @@ $row = $result->fetch_assoc();
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
+<?php } ?>

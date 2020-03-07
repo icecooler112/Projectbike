@@ -3,7 +3,10 @@
      * เปิดใช้งาน Session
      */
     session_start();
-   
+    if (!$_SESSION['id']) {
+        header("Location:../login.php");
+    } else {
+
 ?>
 <?php     include('../connect.php'); // ดึงไฟล์เชื่อมต่อ Database เข้ามาใช้งาน ?>
 <!DOCTYPE html>
@@ -34,26 +37,26 @@
 
            <ul class="list-unstyled components">
              <li>
-                 <a href="index.php"><i class="fas fa-toolbox mr-1"></i>เพิ่มข้อมูลการซ่อม</a>
+                 <a href="../index.php"><i class="fas fa-toolbox mr-1"></i>เพิ่มข้อมูลการซ่อม</a>
              </li>
              <li>
-                 <a href="history.php"><i class="fas fa-bell"></i> ประวัติการซ่อม</a>
+                 <a href="../history.php"><i class="fas fa-bell"></i> ประวัติการซ่อม</a>
              </li>
              <li class="active">
-                 <a href="user.php"><i class="fas fa-users"></i> ข้อมูลลูกค้า</a>
+                 <a href="../user.php"><i class="fas fa-users"></i> ข้อมูลลูกค้า</a>
              </li>
              <li>
-                 <a href="staff.php"><i class="fas fa-user-cog"></i> ข้อมูลพนักงาน</a>
+                 <a href="../staff.php"><i class="fas fa-user-cog"></i> ข้อมูลพนักงาน</a>
              </li>
 
              <li>
-                 <a href="product.php"><i class="fas fa-box"></i> ข้อมูลสินค้า</a>
+                 <a href="../product.php"><i class="fas fa-box"></i> ข้อมูลสินค้า</a>
              </li>
              <li>
-                 <a href="dealer.php"><i class="fas fa-truck"></i> ข้อมูลผู้จำหน่ายสินค้า</a>
+                 <a href="../dealer.php"><i class="fas fa-truck"></i> ข้อมูลผู้จำหน่ายสินค้า</a>
              </li>
              <li>
-                 <a href="show.php"><i class="fas fa-chart-line"></i> รายงาน</a>
+                 <a href="../show.php"><i class="fas fa-chart-line"></i> รายงาน</a>
              </li>
          </ul>
        </nav>
@@ -143,7 +146,7 @@ $row = $result->fetch_assoc();
                          <td><?php echo $row['year_bike']; ?></td>
                          <td><?php echo $row['brand']; ?></td>
                          <td>
-                           <a href="manage_user/edit_user.php?id=<?php echo $row['user_id']; ?>" class="btn btn-sm btn-warning text-white ">
+                           <a href="../manage_bike/edit_bike.php?id=<?php echo $row['user_id']; ?>" class="btn btn-sm btn-warning text-white ">
                              <i class="fas fa-edit"></i> แก้ไข
                            </a>
                          </td>
@@ -180,7 +183,7 @@ $row = $result->fetch_assoc();
     <script>
     $('.DataTable').DataTable({
             "oLanguage": {
-                "sEmptyTable": "ไม่มีข้อมูลในตาราง",
+                "sEmptyTable": "ไม่พบข้อมูลในตาราง",
                 "sInfo": "แสดง _START_ ถึง _END_ จาก _TOTAL_ แถว",
                 "sInfoEmpty": "แสดง 0 ถึง 0 จาก 0 แถว",
                 "sInfoFiltered": "(กรองข้อมูล _MAX_ ทุกแถว)",
@@ -208,3 +211,4 @@ $row = $result->fetch_assoc();
 
 </body>
 </html>
+<?php } ?>

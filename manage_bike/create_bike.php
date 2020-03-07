@@ -3,6 +3,9 @@
      * เปิดใช้งาน Session
      */
     session_start();
+    if (!$_SESSION['id']) {
+        header("Location:../login.php");
+    } else {
 
 ?>
 <?php     include('../connect.php'); // ดึงไฟล์เชื่อมต่อ Database เข้ามาใช้งาน ?>
@@ -43,7 +46,7 @@ $row = $result->fetch_assoc();
                 if ($result) {
 
                     echo '<script> alert("สำเร็จ! เพิ่มข้อมูลสินค้าเรียบร้อย!")</script>';
-                    header('Refresh:1; url=../user.php');
+                    header('Refresh:0; url=../manage_user/bike_show.php');
                 }else{
                   echo '<script> alert("ล้มเหลว! ไม่สามารถเพิ่มข้อมูลสินค้าได้ กรุกรุณาลองใหม่อีกครั้ง")</script>';
                   header('Refresh:0; url=create_bike.php');
@@ -208,3 +211,4 @@ $row = $result->fetch_assoc();
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
+<?php } ?>
